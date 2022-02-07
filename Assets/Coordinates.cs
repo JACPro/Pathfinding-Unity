@@ -23,4 +23,8 @@ public class Coordinates
     {
         return (x == -1 || y == -1);
     }
+    
+    public bool Equals(Coordinates coordinates) {
+        return (x == coordinates.x && y == coordinates.y);
+    }
 }

@@ -3,5 +3,7 @@ public enum PenState
     Start,
     Finish,
     Wall,
-    Erase
+    Erase,
+    Path,
+    Explored
 }

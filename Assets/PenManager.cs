@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PenManager : MonoBehaviour
 {
-    [SerializeField] GameObject[] borders;
     PenState penState = PenState.Start;
-    [ColorUsageAttribute(false, true)][SerializeField] Color activePen = new Color(0f, 207/255f, 1f, 129/255f);
-    [ColorUsageAttribute(false, true)][SerializeField] Color inactivePen = new Color(0f, 0f, 0f, 65/255f);
+    UIManager uiManager;
+
+    private void Awake() {
+        uiManager = FindObjectOfType<UIManager>();    
+    }
 
     void Update()
     {
@@ -34,13 +35,13 @@ public class PenManager : MonoBehaviour
         {
             penState += 4;
         }
-        UpdateUI(prev, penState);
+        uiManager.UpdatePenUI(prev, penState);
     }
     public void ChangePenState(int penIndex)
     {
         PenState newPen = (PenState) penIndex;
         if (newPen == penState) return;
-        UpdateUI(penState, newPen);
+        uiManager.UpdatePenUI(penState, newPen);
         penState = newPen;
     }
 
@@ -48,11 +49,4 @@ public class PenManager : MonoBehaviour
     {
         return penState;
     }
-
-    private void UpdateUI(PenState prevPen, PenState newPen)
-    {
-        borders[(int)prevPen].GetComponent<Image>().color = inactivePen;
-        borders[(int)newPen].GetComponent<Image>().color = activePen;
-    }
-
 }

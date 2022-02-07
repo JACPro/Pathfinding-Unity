@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour
     GameManager gameManager;
     PenState tileState = PenState.Erase;
     Material material;
-    Color[] colours = {Color.green, Color.red, Color.black, Color.white};
+    Color[] colours = {Color.green, Color.red, Color.black, Color.white, Color.blue, Color.yellow};
 
     Coordinates coordinates = new Coordinates();
 
