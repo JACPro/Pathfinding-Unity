@@ -3,5 +3,7 @@ TODO:
 - [DONE] Turn off pens when pathfinding
 - [DONE] Enable Camera Zoom
 - [DONE] Implement DFS
-- Implement A* algorithm
-- Implement information details for each algorithm
+- [ ] Implement A* algorithm
+- [ ] Implement information details for each algorithm
+- [ ] Fix Info UI text area resizing 
+- [ ] Camera panning with middle click

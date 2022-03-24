@@ -6,5 +6,5 @@ using UnityEngine;
 	public class InfoBox : ScriptableObject
 	{
 		public string title;
-		[TextArea] public string description;
+		[TextArea(5, 20)] public string description;
 	}

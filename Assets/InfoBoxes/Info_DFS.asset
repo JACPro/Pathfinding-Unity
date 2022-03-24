@@ -13,4 +13,21 @@ MonoBehaviour:
   m_Name: Info_DFS
   m_EditorClassIdentifier: 
   title: Depth First Search
-  description: Some DFS description
+  description: 'Depth First Search (DFS) is an algorithm for searching graph and
+    tree structures. It starts at the top node of a tree and fully explores each
+    branch before returning to unexplored paths. In the context of our 2D grid, this
+    means nodes will be explored in a straight line, rather than tracing around already
+    explored tiles (as BFS does).
+
+
+    DFS is functionally very similar to Breadth
+    First Search, except it stores newly discovered nodes in a stack data structure.
+    By taking the top node from the stack as the next to explore, DFS ensures it
+    is always prioritising newly discovered nodes over older ones.
+
+
+    Although
+    DFS reliably returns a path from start to finish, it cannot be used to find the
+    shortest path in a graph. For tree structures, however, there exists only one
+    path between any two vertices; DFS, like all pathfinding algorithms that reliably
+    return a result, will find the shortest path between two nodes in a tree.'
