@@ -1,0 +1,7 @@
+TODO:
+
+- [DONE] Turn off pens when pathfinding
+- [DONE] Enable Camera Zoom
+- [DONE] Implement DFS
+- Implement A* algorithm
+- Implement information details for each algorithm

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbbc27c38af79843882f9d228fc871d, type: 3}
+  m_Name: Info_BFS
+  m_EditorClassIdentifier: 
+  title: Breadth First Search
+  description: 'Breadth First Search (BFS) is an algorithm for searching graph and
+    tree structures. It works by exploring all the adjacent nodes around the start
+    point, then exploring the adjacent nodes around each of those nodes, and repeats
+    this process until the goal is found or every node has been explored.
+
+    To
+    achieve this, BFS uses a queue data structure to keep track of the order in which
+    each node is discovered; it then explores them in the order in which they are
+    queued.
+
+
+    The modified version of this algorithm used in this demonstration
+    also stores the previous node for each node. This means that when the goal is
+    discovered, it can reliably backtrack through each node it explored in order
+    to reach that goal, and thus it can return the shortest path from the start to
+    the end points.'
