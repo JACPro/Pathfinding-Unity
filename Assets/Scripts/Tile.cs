@@ -5,17 +5,17 @@ using UnityEngine.EventSystems;
 
 public class Tile : MonoBehaviour
 {
-    GameManager gameManager;
-    PenState tileState = PenState.Erase;
-    Material material;
-    Color[] colours = {Color.green, Color.red, Color.black, Color.white, Color.blue, Color.yellow};
+    private GameManager _gameManager;
+    private PenState _tileState = PenState.Erase;
+    private Material _material;
+    private Color[] _colours = { Color.green, Color.red, Color.black, Color.white, Color.blue, Color.yellow };
 
-    Coordinates coordinates = new Coordinates();
+    private Coordinates coordinates = new Coordinates();
 
     public void SetCoordinates(int x, int y)
     {
-        coordinates.x = x;
-        coordinates.y = y;
+        coordinates._x = x;
+        coordinates._y = y;
     }
 
     public Coordinates GetCoordinates()
@@ -23,50 +23,52 @@ public class Tile : MonoBehaviour
         return coordinates;
     }
 
-    void Start()
+    private void Start()
     {
-        material = GetComponent<Renderer>().material;
-        gameManager = FindObjectOfType<GameManager>();
+        _material = GetComponent<Renderer>().material;
+        _gameManager = FindObjectOfType<GameManager>();
     }
 
-    private void OnMouseEnter() {
+    private void OnMouseEnter() 
+    {
         //draw when mouse held down only if wall or clear
-        if (Input.GetMouseButton(0) && (int) gameManager.GetPenState() > 1)
+        if (Input.GetMouseButton(0) && (int) _gameManager.GetPenState() > 1)
         {
             ChangeTile();
         }
     }
 
-    private void OnMouseDown() {
+    private void OnMouseDown() 
+    {
         if (!EventSystem.current.IsPointerOverGameObject())
             ChangeTile();
     }
 
-    void ChangeTile()
+    private void ChangeTile()
     {
-        if (gameManager.GetGameState() != GameState.Drawing) return;
+        if (_gameManager.GetGameState() != GameState.Drawing) return;
         
-        tileState = gameManager.GetPenState();
-        material.color = colours[(int)tileState];
-        if (tileState == PenState.Finish) 
-            gameManager.SetFinish(coordinates);
-        else if (tileState == PenState.Start) 
-            gameManager.SetStart(coordinates);
+        _tileState = _gameManager.GetPenState();
+        _material.color = _colours[(int)_tileState];
+        if (_tileState == PenState.Finish) 
+            _gameManager.SetFinish(coordinates);
+        else if (_tileState == PenState.Start) 
+            _gameManager.SetStart(coordinates);
     }
 
     public void ChangeTile(PenState newState, bool updateColour)
     {
-        tileState = newState;
+        _tileState = newState;
         if (updateColour) UpdateTileColour();
     }
 
     public void UpdateTileColour()
     {
-        material.color = colours[(int)tileState];
+        _material.color = _colours[(int)_tileState];
     }
 
     public PenState GetTileState()
     {
-        return tileState;
+        return _tileState;
     }
 }

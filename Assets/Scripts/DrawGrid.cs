@@ -5,28 +5,28 @@ using UnityEngine;
 public class DrawGrid : MonoBehaviour
 {
 
-    [SerializeField] int gridSizeX = 41;
-    [SerializeField] int gridSizeY = 24;
+    [SerializeField] private int _gridSizeX = 41;
+    [SerializeField] private int _gridSizeY = 24;
 
-    [SerializeField] GameObject tilePrefab;
-    GameObject[,] emptyGrid;
+    [SerializeField] private GameObject _tilePrefab;
+    private GameObject[,] _emptyGrid;
 
     public GameObject[,] DrawTiles()
     {
-        float tileSize = tilePrefab.transform.localScale.x;
+        float tileSize = _tilePrefab.transform.localScale.x;
         float tileSpacing = 0.07f;
 
         float xOffset = -8.61f;
         float yOffset = -4.15f;
 
-        GameObject[,] grid = new GameObject[gridSizeX,gridSizeY];
+        GameObject[,] grid = new GameObject[_gridSizeX,_gridSizeY];
 
-        for (int rows = 0; rows < gridSizeX; rows++)
+        for (int rows = 0; rows < _gridSizeX; rows++)
         {
-            for (int cols = 0; cols < gridSizeY; cols++)
+            for (int cols = 0; cols < _gridSizeY; cols++)
             {
                 grid[rows, cols] = Instantiate(
-                    tilePrefab, 
+                    _tilePrefab, 
                     new Vector3 (xOffset + rows * (tileSize + tileSpacing), yOffset + cols * (tileSize + tileSpacing), 0), 
                     Quaternion.identity, 
                     gameObject.transform
@@ -34,17 +34,17 @@ public class DrawGrid : MonoBehaviour
                 grid[rows, cols].GetComponent<Tile>().SetCoordinates(rows, cols);
             }
         }
-        emptyGrid = grid;
+        _emptyGrid = grid;
         return grid;
     }
 
-    public void GetEmptyGrid(GameObject[,] emptyGrid)
+    public void GetEmptyGrid(GameObject[,] _emptyGrid)
     {
-        for (int rows = 0; rows < gridSizeX; rows++)
+        for (int rows = 0; rows < _gridSizeX; rows++)
         {
-            for (int cols = 0; cols < gridSizeY; cols++)
+            for (int cols = 0; cols < _gridSizeY; cols++)
             {
-                emptyGrid[rows,cols].GetComponent<Tile>().ChangeTile(PenState.Erase, true);
+                _emptyGrid[rows,cols].GetComponent<Tile>().ChangeTile(PenState.Erase, true);
             }
         }
     }

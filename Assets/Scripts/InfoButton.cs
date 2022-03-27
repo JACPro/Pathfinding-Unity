@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class InfoButton : MonoBehaviour
 {
-    SearchRoutine searchRoutine;
-    Button button;
-    GameManager gameManager;
+    private SearchRoutine _searchRoutine;
+    private Button _button;
+    private GameManager _gameManager;
     
-    private void Awake() {
-        searchRoutine = GetComponent<SearchRoutine>();
-        button = GetComponent<Button>();
-        button.onClick.AddListener(delegate{searchRoutine.StartSearch();});
+    private void Awake() 
+    {
+        _searchRoutine = GetComponent<SearchRoutine>();
+        _button = GetComponent<Button>();
+        _button.onClick.AddListener(delegate{_searchRoutine.StartSearch();});
     }
 }

@@ -9,74 +9,75 @@ public enum MessageType { Error, Warning, Normal }
 public class UIManager : MonoBehaviour
 {
 	[Header("Pen Selection")]
-	[SerializeField] GameObject[] borders;
-	[ColorUsageAttribute(false, true)][SerializeField] Color activePen = new Color(0f, 207/255f, 1f, 129/255f);
-	[ColorUsageAttribute(false, true)][SerializeField] Color inactivePen = new Color(0f, 0f, 0f, 65/255f);
+	[SerializeField] private GameObject[] _borders;
+	[ColorUsageAttribute(false, true)][SerializeField] private Color _activePen = new Color(0f, 207/255f, 1f, 129/255f);
+	[ColorUsageAttribute(false, true)][SerializeField] private Color _inactivePen = new Color(0f, 0f, 0f, 65/255f);
 
 	[Header("Info Menu")]
-	[SerializeField] GameObject infoUI;
-	[SerializeField] TextMeshProUGUI title, description;
+	[SerializeField] private GameObject _infoUI;
+	[SerializeField] private TextMeshProUGUI _title, _description;
 
 	[Header("Search buttons")]
-	[SerializeField] Button dfsButton;
-	[SerializeField] Button bfsButton;
-	[SerializeField] Button aStarButton;
+	[SerializeField] private Button _dfsButton;
+	[SerializeField] private Button _bfsButton;
+	[SerializeField] private Button _aStarButton;
 
 	[Header("Error Box")]
-	[SerializeField] TextMeshProUGUI errorMessage;
-	MessageType messageType;
+	[SerializeField] private TextMeshProUGUI _errorMessage;
+	private MessageType _messageType;
 
 	public event Action<GameState> OnInfoUI;
+
 	public void UpdatePenUI(PenState prevPen, PenState newPen)
 	{
-		borders[(int)prevPen].GetComponent<Image>().color = inactivePen;
-		borders[(int)newPen].GetComponent<Image>().color = activePen;
+		_borders[(int)prevPen].GetComponent<Image>().color = _inactivePen;
+		_borders[(int)newPen].GetComponent<Image>().color = _activePen;
 	}
 
-	public void UpdateMessage(string newMessage, MessageType messageType)
+	public void UpdateMessage(string newMessage, MessageType _messageType)
 	{
 		string messagePrefix = "";
-		switch(messageType) 
+		switch(_messageType) 
 		{
 			case MessageType.Error:
 				messagePrefix = "ERROR: ";
-				errorMessage.faceColor = Color.red;
+				_errorMessage.faceColor = Color.red;
 				break;
 			case MessageType.Warning:
 				messagePrefix = "WARNING: ";
-				errorMessage.faceColor = Color.yellow;
+				_errorMessage.faceColor = Color.yellow;
 				break;
 			case MessageType.Normal:
-				errorMessage.faceColor = Color.white;
+				_errorMessage.faceColor = Color.white;
 				break;
 		}
-		errorMessage.text = messagePrefix + newMessage;
+		_errorMessage.text = messagePrefix + newMessage;
 	}
 
 	public void ShowInfoBox(InfoBox infoBox)
 	{
 		OnInfoUI?.Invoke(GameState.Menu);
-		infoUI.SetActive(true);
-		title.text = infoBox.title;
-		description.text = infoBox.description;
+		_infoUI.SetActive(true);
+		_title.text = infoBox._title;
+		_description.text = infoBox._description;
 	}
 
 	public void HideInfoBox()
 	{
 		OnInfoUI?.Invoke(GameState.Drawing);
-		infoUI.SetActive(false);
+		_infoUI.SetActive(false);
 	}
 
 	public void ClearErrorMessage()
 	{
-		errorMessage.text = "";
+		_errorMessage.text = "";
 	}
 
 	public void SetSearchButtonsActive(GameState gameState)
 	{
 		bool isActive = gameState == GameState.Drawing;
-		bfsButton.interactable = isActive;
-		dfsButton.interactable = isActive;
-		aStarButton.interactable = isActive;
+		_bfsButton.interactable = isActive;
+		_dfsButton.interactable = isActive;
+		_aStarButton.interactable = isActive;
 	}
 }

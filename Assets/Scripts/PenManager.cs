@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PenState { Start, Finish, Wall, Erase, Path, Explored }
 public class PenManager : MonoBehaviour
 {
-    PenState penState = PenState.Start;
-    UIManager uiManager;
+    private PenState _penState = PenState.Start;
+    private UIManager _uiManager;
 
-    private void Awake() {
-        uiManager = FindObjectOfType<UIManager>();    
+    private void Awake() 
+    {
+        _uiManager = FindObjectOfType<UIManager>();    
     }
 
-    void Update()
+    private void Update()
     {
         if(Input.GetButtonDown("Previous"))
         {
@@ -25,28 +27,28 @@ public class PenManager : MonoBehaviour
 
     public void ScrollPenState(int change)
     {
-        PenState prev = penState;
+        PenState prev = _penState;
 
-        penState += change;
-        if ((int) penState > 3)
+        _penState += change;
+        if ((int) _penState > 3)
         {
-            penState -= 4;
-        } else if ((int) penState < 0)
+            _penState -= 4;
+        } else if ((int) _penState < 0)
         {
-            penState += 4;
+            _penState += 4;
         }
-        uiManager.UpdatePenUI(prev, penState);
+        _uiManager.UpdatePenUI(prev, _penState);
     }
     public void ChangePenState(int penIndex)
     {
         PenState newPen = (PenState) penIndex;
-        if (newPen == penState) return;
-        uiManager.UpdatePenUI(penState, newPen);
-        penState = newPen;
+        if (newPen == _penState) return;
+        _uiManager.UpdatePenUI(_penState, newPen);
+        _penState = newPen;
     }
 
     public PenState GetPenState()
     {
-        return penState;
+        return _penState;
     }
 }

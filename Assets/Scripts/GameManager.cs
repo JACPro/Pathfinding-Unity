@@ -8,132 +8,132 @@ using UnityEngine;
 public enum GameState { Drawing, Executing, Menu }
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] DrawGrid gridManager;
-    [SerializeField] PenManager penManager;
-    UIManager uiManager;
-    GameObject[,] grid;
-    Coordinates start = new Coordinates(), finish = new Coordinates();
-    AudioSource errorSound;
-    Stack<Tile> path;
-    Queue<Stack<Tile>> explorePath;
-    GameState gameState = GameState.Drawing;
-    [SerializeField] int drawSpeed = 1;
+    [SerializeField] private DrawGrid _gridManager;
+    [SerializeField] private PenManager _penManager;
+    private UIManager _uiManager;
+    private GameObject[,] _grid;
+    private Coordinates _start = new Coordinates(), _finish = new Coordinates();
+    private AudioSource _errorSound;
+    private Stack<Tile> _path;
+    private Queue<Stack<Tile>> _explorePath;
+    private GameState _gameState = GameState.Drawing;
+    [SerializeField] private int _drawSpeed = 1;
     public event Action<GameState> OnStateChanged;
 
     private void Awake() 
     {
-        uiManager = FindObjectOfType<UIManager>();
-        errorSound = GetComponent<AudioSource>();
-        uiManager.OnInfoUI += SetGameState;
-        OnStateChanged += uiManager.SetSearchButtonsActive;
+        _uiManager = FindObjectOfType<UIManager>();
+        _errorSound = GetComponent<AudioSource>();
+        _uiManager.OnInfoUI += SetGameState;
+        OnStateChanged += _uiManager.SetSearchButtonsActive;
     }
 
-    void Start()
+    private void _Start()
     {
-        grid = gridManager.DrawTiles();
+        _grid = _gridManager.DrawTiles();
     }
 
-    public Coordinates GetStart() => start;
-    public Coordinates GetFinish() => finish;
-    public GameObject[,] GetGrid() => grid;
-    public GameState GetGameState() => gameState;
-    public PenState GetPenState() => penManager.GetPenState();
+    public Coordinates GetStart() => _start;
+    public Coordinates GetFinish() => _finish;
+    public GameObject[,] GetGrid() => _grid;
+    public GameState GetGameState() => _gameState;
+    public PenState GetPenState() => _penManager.GetPenState();
 
-    public void SetStart(Coordinates newStart)
+    public void SetStart(Coordinates new_Start)
     {
-        if (start == newStart) return;
-        if (newStart == finish) finish = Coordinates.EMPTY;
+        if (_start == new_Start) return;
+        if (new_Start == _finish) _finish = Coordinates._empty;
 
-        if (!start.IsNull()) 
+        if (!_start.IsNull()) 
         {
-            Tile prevStart = grid[start.x, start.y].GetComponent<Tile>();
-            if (prevStart.GetTileState() == PenState.Start)
+            Tile prev_Start = _grid[_start._x, _start._y].GetComponent<Tile>();
+            if (prev_Start.GetTileState() == PenState.Start)
             {
-                prevStart.ChangeTile(PenState.Erase, true);
+                prev_Start.ChangeTile(PenState.Erase, true);
             }
         }
-        start = newStart;
+        _start = new_Start;
     }
 
-    public void SetFinish(Coordinates newFinish)
+    public void SetFinish(Coordinates new_Finish)
     {
-        if (finish == newFinish) return;
-        if (newFinish == start) start = Coordinates.EMPTY;
+        if (_finish == new_Finish) return;
+        if (new_Finish == _start) _start = Coordinates._empty;
 
-        if (!finish.IsNull()) 
+        if (!_finish.IsNull()) 
         {
-            Tile prevFinish = grid[finish.x, finish.y].GetComponent<Tile>();
-            if (prevFinish.GetTileState() == PenState.Finish)
+            Tile prev_Finish = _grid[_finish._x, _finish._y].GetComponent<Tile>();
+            if (prev_Finish.GetTileState() == PenState.Finish)
             {
-                prevFinish.ChangeTile(PenState.Erase, true);
+                prev_Finish.ChangeTile(PenState.Erase, true);
             }
         }
-        finish = newFinish;
+        _finish = new_Finish;
     }
 
     public void ClearTiles()
     {
         StopDrawingPath();
-        gridManager.GetEmptyGrid(grid);
-        start = finish = Coordinates.EMPTY;
+        _gridManager.GetEmptyGrid(_grid);
+        _start = _finish = Coordinates._empty;
     }
 
     public void StopDrawingPath()
     {
         StopAllCoroutines();
-        //StopCoroutine(pathDrawRoutine);
+        //StopCoroutine(_pathDrawRoutine);
         SetGameState(GameState.Drawing);
     }
 
-    public void SetGameState(GameState gameState)
+    public void SetGameState(GameState _gameState)
     {
-        this.gameState = gameState;
-        OnStateChanged?.Invoke(gameState);
-        Debug.Log(gameState);
+        this._gameState = _gameState;
+        OnStateChanged?.Invoke(_gameState);
+        Debug.Log(_gameState);
     }
 
     public void StartSearch(SearchRoutine searchRoutine)
     {
-        if (start.IsNull())
+        if (_start.IsNull())
         {
-            errorSound.Play(0);
-            uiManager.UpdateMessage("Missing start point", MessageType.Error);
+            _errorSound.Play(0);
+            _uiManager.UpdateMessage("Missing _start point", MessageType.Error);
             return;
-        } else if (finish.IsNull())
+        } else if (_finish.IsNull())
         {
-            errorSound.Play(0);
-            uiManager.UpdateMessage("Missing end point", MessageType.Error);
+            _errorSound.Play(0);
+            _uiManager.UpdateMessage("Missing end point", MessageType.Error);
             return;
         }
         SetGameState(GameState.Executing);
-        uiManager.ClearErrorMessage();
+        _uiManager.ClearErrorMessage();
         StopAllCoroutines();
-        explorePath = searchRoutine.Search(grid, start, finish);
+        _explorePath = searchRoutine.Search(_grid, _start, _finish);
         DrawExploredTilesAsync();
         
     }
 
-    public void SetFinalPath(Stack<Tile> path)
+    public void SetFinalPath(Stack<Tile> _path)
     {
-        if (path.Count == 0)
+        if (_path.Count == 0)
         {
-            errorSound.Play(0);
-            uiManager.UpdateMessage("No possible path", MessageType.Error);
+            _errorSound.Play(0);
+            _uiManager.UpdateMessage("No possible _path", MessageType.Error);
         }
         else 
         {
-            uiManager.ClearErrorMessage();
-            this.path = path; 
+            _uiManager.ClearErrorMessage();
+            this._path = _path; 
         }
     }
 
     private async void DrawExploredTilesAsync()
     {
-        if (explorePath == null) return;
+        if (_explorePath == null) return;
 
-        for (int i = explorePath.Count; i > 0; i--)
+        for (int i = _explorePath.Count; i > 0; i--)
         {
-            Stack<Tile> tiles = explorePath.Dequeue();
+            Stack<Tile> tiles = _explorePath.Dequeue();
             while (tiles.Count > 0)
             {
                 Tile currTile = tiles.Pop();
@@ -141,22 +141,22 @@ public class GameManager : MonoBehaviour
             }
             await Task.Delay(1);
         }
-        uiManager.UpdateMessage("Finished drawing explored tiles", MessageType.Normal);
-        DrawPath();
+        _uiManager.UpdateMessage("_Finished drawing explored tiles", MessageType.Normal);
+        Draw_Path();
     }
 
-    private void DrawPath()
+    private void Draw_Path()
     {
-        if (path == null) return;
+        if (_path == null) return;
 
-        while (path.Count > 0)
+        while (_path.Count > 0)
         {
             //check if time flag passed
-            Tile currTile = path.Pop();
+            Tile currTile = _path.Pop();
             currTile.ChangeTile(PenState.Path, true);
         }
 
-        uiManager.UpdateMessage("Finished drawing path", MessageType.Normal);
+        _uiManager.UpdateMessage("_Finished drawing _path", MessageType.Normal);
         SetGameState(GameState.Drawing);
     }
 }

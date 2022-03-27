@@ -4,15 +4,17 @@ using UnityEngine;
 
 public abstract class SearchRoutine : MonoBehaviour
 {
-    protected GameManager gameManager;
+  protected GameManager _gameManager;
 
-	private void Awake() {
-		gameManager = FindObjectOfType<GameManager>();	
+	private void Awake() 
+  {
+    _gameManager = FindObjectOfType<GameManager>();	
 	}
 
     public void StartSearch()
     {
-		gameManager.StartSearch(this);
+		  _gameManager.StartSearch(this);
     }
+    
     public abstract Queue<Stack<Tile>> Search(GameObject[,] grid, Coordinates start, Coordinates finish);
 }
